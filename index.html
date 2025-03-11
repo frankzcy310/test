@@ -63,6 +63,187 @@
             border-left: 3px solid var(--main-color);
             transform: perspective(500px) rotateX(5deg);
         }
+        
+        /* 修改心理测试按钮风格与其他按钮一致 */
+        .personality-test-btn {
+            position: absolute;
+            left: -70px; /* 调整位置对齐左侧其他按钮 */
+            top: 250px; /* 根据红色箭头位置调整 */
+            width: 40px;
+            height: 40px;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* 为水波纹效果添加溢出隐藏 */
+            border: none; /* 移除边框 */
+        }
+        
+        .personality-test-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* 大脑图标 SVG 样式 */
+        .brain-icon {
+            width: 28px;
+            height: 28px;
+            fill: #d3b990; /* 保持金色调 */
+            filter: drop-shadow(0 0 5px rgba(211, 185, 144, 0.7)); /* 添加光晕效果 */
+        }
+        
+        /* 水波纹效果 */
+        .ripple {
+            position: absolute;
+            background: rgba(211, 185, 144, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+        
+        /* 修改clock-frame使其成为相对定位容器 */
+        .clock-frame {
+            position: relative;
+        }
+        
+        /* 测试模态窗口样式 */
+        .personality-test-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .personality-test-content {
+            position: relative;
+            width: 80%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: rgba(20, 20, 20, 0.9);
+            border: 2px solid #d3b990;
+            border-radius: 10px;
+            padding: 30px;
+            color: #d3b990;
+            box-shadow: 0 0 30px rgba(211, 185, 144, 0.3);
+            text-align: center;
+        }
+        
+        .close-test {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #d3b990;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-test:hover {
+            color: #fff;
+            transform: scale(1.2);
+        }
+        
+        .test-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(211, 185, 144, 0.5);
+        }
+        
+        .test-question {
+            font-size: 18px;
+            margin: 30px 0 20px;
+            text-align: left;
+        }
+        
+        .test-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .test-option {
+            padding: 12px 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid #d3b990;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        
+        .test-option:hover {
+            background-color: rgba(211, 185, 144, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .test-nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .test-button {
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid #d3b990;
+            color: #d3b990;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            background-color: rgba(211, 185, 144, 0.3);
+        }
+        
+        .test-result {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .result-name {
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(211, 185, 144, 0.6);
+        }
+        
+        .result-description {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        /* 添加角色类型标签 */
+        .character-type {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: rgba(211, 185, 144, 0.2);
+            border: 1px solid #d3b990;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .character-type.hunter {
+            background-color: rgba(220, 30, 30, 0.2);
+            border-color: #dc1e1e;
+        }
     </style>
 </head>
 <body>
@@ -87,6 +268,13 @@
         
         <div class="clock-container">
             <div class="clock-frame">
+                <!-- 修改按钮样式，使其与界面其他按钮一致 -->
+                <div class="personality-test-btn" id="personalityTestBtn" title="测测你是第五人格中的哪个角色">
+                    <svg class="brain-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.5,7A1.5,1.5 0 0,1 12,5.5A1.5,1.5 0 0,1 13.5,4A1.5,1.5 0 0,1 15,5.5A1.5,1.5 0 0,1 13.5,7M13.5,20A1.5,1.5 0 0,1 12,18.5A1.5,1.5 0 0,1 13.5,17A1.5,1.5 0 0,1 15,18.5A1.5,1.5 0 0,1 13.5,20M8,7A1.5,1.5 0 0,1 6.5,5.5A1.5,1.5 0 0,1 8,4A1.5,1.5 0 0,1 9.5,5.5A1.5,1.5 0 0,1 8,7M8,20A1.5,1.5 0 0,1 6.5,18.5A1.5,1.5 0 0,1 8,17A1.5,1.5 0 0,1 9.5,18.5A1.5,1.5 0 0,1 8,20M12,11.5A2.5,2.5 0 0,1 14.5,14A2.5,2.5 0 0,1 12,16.5A2.5,2.5 0 0,1 9.5,14A2.5,2.5 0 0,1 12,11.5M19,13.5A4.5,4.5 0 0,1 14.5,18A4.5,4.5 0 0,1 10,13.5A4.5,4.5 0 0,1 14.5,9A4.5,4.5 0 0,1 19,13.5M13.5,4A3.5,3.5 0 0,0 10,7.5A3.5,3.5 0 0,0 13.5,11A3.5,3.5 0 0,0 17,7.5A3.5,3.5 0 0,0 13.5,4M8,4A3.5,3.5 0 0,0 4.5,7.5A3.5,3.5 0 0,0 8,11A3.5,3.5 0 0,0 11.5,7.5A3.5,3.5 0 0,0 8,4M8,17A3.5,3.5 0 0,0 4.5,20.5A3.5,3.5 0 0,0 8,24A3.5,3.5 0 0,0 11.5,20.5A3.5,3.5 0 0,0 8,17M13.5,17A3.5,3.5 0 0,0 10,20.5A3.5,3.5 0 0,0 13.5,24A3.5,3.5 0 0,0 17,20.5A3.5,3.5 0 0,0 13.5,17Z"/>
+                    </svg>
+                </div>
+                
                 <div class="clock">
                     <div class="time" id="time">00:00:00</div>
                     <div class="date" id="date">0000年00月00日</div>
@@ -101,6 +289,530 @@
 
     <div class="film-grain"></div>
 
+    <!-- 心理测试模态窗口 -->
+    <div class="personality-test-modal" id="personalityTestModal">
+        <div class="personality-test-content">
+            <span class="close-test" id="closeTest">&times;</span>
+            <div class="test-container" id="testContainer">
+                <h2 class="test-title">第五人格角色心理测试</h2>
+                <p>通过回答几个问题，发现你最像哪位角色！</p>
+                
+                <!-- 测试问题会通过JS动态加载 -->
+                <div id="questionContainer"></div>
+                
+                <div class="test-nav-buttons">
+                    <button class="test-button" id="prevBtn" style="display:none;">上一题</button>
+                    <button class="test-button" id="nextBtn">开始测试</button>
+                </div>
+            </div>
+            
+            <!-- 结果页面 -->
+            <div class="test-result" id="testResult" style="display:none;">
+                <h2 class="test-title">测试结果</h2>
+                <div class="character-type" id="characterType">求生者</div>
+                <h3 class="result-name" id="resultName"></h3>
+                <p class="result-description" id="resultDescription"></p>
+                <button class="test-button" id="retakeBtn">重新测试</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <!-- 添加心理测试脚本 -->
+    <script>
+        // 心理测试功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const testBtn = document.getElementById('personalityTestBtn');
+            const testModal = document.getElementById('personalityTestModal');
+            const closeTest = document.getElementById('closeTest');
+            const questionContainer = document.getElementById('questionContainer');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const testContainer = document.getElementById('testContainer');
+            const testResult = document.getElementById('testResult');
+            const resultName = document.getElementById('resultName');
+            const resultDescription = document.getElementById('resultDescription');
+            const retakeBtn = document.getElementById('retakeBtn');
+            const characterType = document.getElementById('characterType');
+            
+            // 扩充测试问题到10题
+            const questions = [
+                // 现有的5个问题保留
+                {
+                    question: "在危险情况下，你通常会怎么做？",
+                    options: [
+                        { text: "迅速逃跑，保全自己", scores: { "幸运儿": 3, "医生": 1, "园丁": 2, "机械师": 2, "冒险家": 3, "入殓师": -1 } },
+                        { text: "寻找解决方案，冷静应对", scores: { "律师": 3, "机械师": 3, "心理医生": 2, "勘探员": 2, "魔术师": 3, "囚徒": 2 } },
+                        { text: "保护队友，即使冒险", scores: { "前锋": 3, "佣兵": 3, "守卫": 3, "医生": 2, "驯兽师": 2, "残翼": 2 } },
+                        { text: "观察局势，制定策略", scores: { "先知": 3, "祭司": 2, "傀儡师": 3, "魔术师": 2, "造梦师": 2, "博士": 2 } }
+                    ]
+                },
+                {
+                    question: "你喜欢什么样的工作方式？",
+                    options: [
+                        { text: "独立行动，依靠自己", scores: { "佣兵": 2, "勘探员": 3, "杂技演员": 2, "盲女": 2, "舞女": 3, "小丑": 3 } },
+                        { text: "与团队合作，互相支持", scores: { "医生": 3, "园丁": 3, "守卫": 2, "机械师": 2, "慈善家": 3, "猎人": -2 } },
+                        { text: "领导他人，指挥行动", scores: { "先知": 3, "律师": 2, "傀儡师": 3, "画家": 1, "音乐家": 2, "红夫人": 3 } },
+                        { text: "在幕后支持，提供帮助", scores: { "心理医生": 3, "祭司": 3, "魔术师": 2, "机械师": 2, "厨师": 2, "孽兽": -1 } }
+                    ]
+                },
+                {
+                    question: "面对挫折时，你通常如何应对？",
+                    options: [
+                        { text: "积极乐观，相信运气会好转", scores: { "幸运儿": 3, "杂技演员": 2, "前锋": 2, "园丁": 1, "小女孩": 2, "夜魇": -1 } },
+                        { text: "分析原因，寻找解决办法", scores: { "机械师": 3, "律师": 3, "勘探员": 2, "心理医生": 2, "学者": 3, "摄影师": 2 } },
+                        { text: "坚持不懈，努力克服", scores: { "佣兵": 3, "守卫": 2, "医生": 2, "杂技演员": 2, "调香师": 2, "破轮": 2 } },
+                        { text: "接受现实，寻求内心平静", scores: { "祭司": 3, "盲女": 3, "画家": 2, "先知": 1, "占卜师": 3, "记者": 2 } }
+                    ]
+                },
+                {
+                    question: "你最欣赏他人的哪种品质？",
+                    options: [
+                        { text: "勇气和牺牲精神", scores: { "佣兵": 3, "前锋": 3, "守卫": 3, "医生": 2, "军官": 3, "鹿头": -1 } },
+                        { text: "聪明才智和洞察力", scores: { "律师": 3, "心理医生": 3, "先知": 3, "傀儡师": 2, "探索家": 3, "梦魇": 2 } },
+                        { text: "善良和关爱他人", scores: { "医生": 3, "园丁": 3, "祭司": 2, "心理医生": 2, "文学少女": 2, "蜘蛛": -2 } },
+                        { text: "实用技能和解决问题的能力", scores: { "机械师": 3, "勘探员": 3, "杂技演员": 2, "魔术师": 2, "邮差": 2, "无名指": 1 } }
+                    ]
+                },
+                {
+                    question: "你最害怕什么？",
+                    options: [
+                        { text: "失去控制或被操控", scores: { "律师": 3, "佣兵": 2, "傀儡师": -1, "魔术师": -1, "行者": 2, "利维坦": 3 } },
+                        { text: "孤独和被遗弃", scores: { "园丁": 3, "心理医生": 2, "画家": 3, "盲女": 2, "病患": 3, "雪人": 2 } },
+                        { text: "失败和无能为力", scores: { "医生": 3, "机械师": 2, "守卫": 3, "前锋": 2, "牧童": 2, "黄衣之主": 3 } },
+                        { text: "未知和不可预见的危险", scores: { "先知": -1, "勘探员": 3, "幸运儿": -1, "祭司": 2, "古董商": 2, "使徒": 3 } }
+                    ]
+                },
+                // 新增的5个问题
+                {
+                    question: "在团队中，你更倾向于扮演什么角色？",
+                    options: [
+                        { text: "支持者，帮助他人成功", scores: { "医生": 3, "心理医生": 3, "祭司": 3, "园丁": 2, "护士": 3, "百变怪": -1 } },
+                        { text: "领导者，指引方向", scores: { "律师": 3, "先知": 3, "傀儡师": 2, "佣兵": 1, "指挥官": 3, "监管者": 3 } },
+                        { text: "执行者，完成任务", scores: { "佣兵": 3, "机械师": 2, "杂技演员": 2, "勘探员": 2, "雇佣兵": 3, "无面人": 2 } },
+                        { text: "创新者，提供新思路", scores: { "魔术师": 3, "画家": 3, "幸运儿": 2, "先知": 2, "发明家": 3, "摩天轮": 1 } }
+                    ]
+                },
+                {
+                    question: "你认为自己更像哪种角色形象？",
+                    options: [
+                        { text: "隐忍坚韧的生存者", scores: { "佣兵": 3, "盲女": 3, "医生": 2, "机械师": 2, "囚徒": 3, "疯眼": 1 } },
+                        { text: "神秘强大的掌控者", scores: { "傀儡师": 3, "先知": 3, "祭司": 2, "魔术师": 2, "雕刻家": 2, "百眼": 3 } },
+                        { text: "温暖善良的守护者", scores: { "园丁": 3, "医生": 3, "守卫": 3, "前锋": 2, "修女": 3, "厄剧": -2 } },
+                        { text: "智慧敏锐的策略家", scores: { "律师": 3, "心理医生": 3, "勘探员": 2, "画家": 1, "心理学家": 3, "夜行者": 2 } }
+                    ]
+                },
+                {
+                    question: "面对危险时，你更关注什么？",
+                    options: [
+                        { text: "保护自己，确保生存", scores: { "幸运儿": 3, "杂技演员": 3, "勘探员": 2, "盲女": 1, "逃生者": 3, "噬魂者": 3 } },
+                        { text: "保护他人，确保团队安全", scores: { "医生": 3, "守卫": 3, "前锋": 3, "佣兵": 2, "保镖": 3, "追踪者": -1 } },
+                        { text: "寻找解决危机的方法", scores: { "机械师": 3, "律师": 3, "心理医生": 2, "魔术师": 2, "探险家": 3, "黑白无常": 1 } },
+                        { text: "观察情况，准备应变", scores: { "先知": 3, "祭司": 2, "傀儡师": 2, "画家": 2, "观察员": 3, "摄像机": 2 } }
+                    ]
+                },
+                {
+                    question: "你在游戏中会选择什么类型的角色？",
+                    options: [
+                        { text: "强力输出型，攻击力强", scores: { "佣兵": 3, "前锋": 3, "杂技演员": 2, "幸运儿": 1, "狙击手": 3, "屠夫": 3 } },
+                        { text: "辅助治疗型，保护队友", scores: { "医生": 3, "园丁": 3, "心理医生": 2, "祭司": 2, "辅助官": 3, "修理工": 2 } },
+                        { text: "策略控制型，控制局面", scores: { "律师": 3, "先知": 3, "傀儡师": 3, "魔术师": 2, "战术家": 3, "魔术大师": 2 } },
+                        { text: "隐匿潜行型，避开危险", scores: { "盲女": 3, "勘探员": 2, "画家": 3, "祭司": 1, "潜行者": 3, "隐形人": 3 } }
+                    ]
+                },
+                {
+                    question: "如果有超能力，你更希望拥有哪种？",
+                    options: [
+                        { text: "治愈能力，帮助他人", scores: { "医生": 3, "园丁": 3, "心理医生": 2, "祭司": 2, "圣光使": 3, "红蝶": 1 } },
+                        { text: "预知未来，洞察先机", scores: { "先知": 3, "律师": 2, "祭司": 2, "画家": 1, "预言家": 3, "梦魇": 2 } },
+                        { text: "隐身能力，避开危险", scores: { "盲女": 3, "杂技演员": 2, "勘探员": 3, "幸运儿": 2, "隐者": 3, "鬼魂": 3 } },
+                        { text: "控制能力，掌握局面", scores: { "傀儡师": 3, "魔术师": 3, "律师": 2, "机械师": 1, "操控者": 3, "游戏管理员": 3 } }
+                    ]
+                }
+            ];
+            
+            // 扩充角色库 - 包括监管者和求生者
+            const characters = {
+                // 原有角色
+                "医生": {
+                    name: "艾米丽·戴尔 (医生)",
+                    type: "求生者",
+                    description: "你像医生一样富有同情心和奉献精神，总是愿意帮助和治愈他人。你勇敢、可靠，是团队的重要支柱。你擅长照顾别人，在危机中保持冷静。"
+                },
+                "律师": {
+                    name: "弗雷迪·莱利 (律师)",
+                    type: "求生者",
+                    description: "你有着律师般的敏锐思维和分析能力，善于策略思考。你冷静、理性，能在压力下做出明智决定。你善于发现规则的漏洞并利用它们获得优势。"
+                },
+                "佣兵": {
+                    name: "奈布·萨贝达 (佣兵)",
+                    type: "求生者",
+                    description: "你像佣兵一样勇敢无畏，行动果断。你依靠自己的能力生存，有很强的适应力和战斗精神。在困境中，你会选择正面迎击而非退缩。"
+                },
+                "园丁": {
+                    name: "艾玛·伍兹 (园丁)",
+                    type: "求生者",
+                    description: "你像园丁一样温柔善良，愿意为他人奉献。你有着治愈心灵的能力，能给周围的人带来温暖和安慰。你相信万物都有生长和重生的可能。"
+                },
+                "机械师": {
+                    name: "特雷西·雷兹尼克 (机械师)",
+                    type: "求生者",
+                    description: "你像机械师一样实用且多才多艺，善于解决实际问题。你动手能力强，在危机中能够即兴创新。你相信每个问题都有技术解决方案。"
+                },
+                "先知": {
+                    name: "伊莱·克拉克 (先知)",
+                    type: "求生者",
+                    description: "你有着先知般的洞察力和预见性，能看到常人看不到的事物。你思维深邃，有一定的神秘气质。你常常能预感到危险的来临。"
+                },
+                "幸运儿": {
+                    name: "卢奇诺 (幸运儿)",
+                    type: "求生者",
+                    description: "你像幸运儿一样乐观开朗，总能在逆境中找到机会。你相信运气，也确实有好运气眷顾你。即使在最黑暗的时刻，你也能找到希望。"
+                },
+                "勘探员": {
+                    name: "诺顿·坎贝尔 (勘探员)",
+                    type: "求生者",
+                    description: "你像勘探员一样喜欢探索和发现，有很强的求知欲。你注重细节，能从蛛丝马迹中找到关键信息。你相信真相总是隐藏在细节之中。"
+                },
+                "守卫": {
+                    name: "威廉姆·艾利斯 (守卫)",
+                    type: "求生者",
+                    description: "你像守卫一样有保护他人的强烈愿望，忠诚可靠。你勇敢坚定，愿意为重要的人事物挺身而出。你永远会站在队伍的最前线。"
+                },
+                "祭司": {
+                    name: "费奥多尔 (祭司)",
+                    type: "求生者",
+                    description: "你像祭司一样有着坚定的信念和精神追求。你能给予他人精神上的指引和支持，内心平静而坚定。你相信一切都有更高的安排。"
+                },
+                "前锋": {
+                    name: "威廉姆·埃利斯 (前锋)",
+                    type: "求生者",
+                    description: "你像前锋一样勇往直前，不畏艰险。你有团队精神，敢于冒险，总是站在最前线保护他人。危险越大，你越能展现自己的价值。"
+                },
+                "心理医生": {
+                    name: "蔡·卡尔迈尔 (心理医生)",
+                    type: "求生者",
+                    description: "你像心理医生一样善于理解和分析他人的情感。你有同理心，能给予他人精神上的支持和帮助。你能够看透人心中的恐惧和希望。"
+                },
+                "杂技演员": {
+                    name: "玛格丽特 (杂技演员)",
+                    type: "求生者",
+                    description: "你像杂技演员一样灵活多变，适应性强。你反应敏捷，有创意，能在困难环境中找到出路。你把生活视为一场需要不断创新的表演。"
+                },
+                "傀儡师": {
+                    name: "操控者 (傀儡师)",
+                    type: "监管者",
+                    description: "你像傀儡师一样有掌控局面的能力，善于引导他人。你有策略思维，善于观察，了解如何影响局势。你享受掌控全局的感觉。"
+                },
+                "盲女": {
+                    name: "海伦娜·亚当斯 (盲女)",
+                    type: "求生者",
+                    description: "你像盲女一样有超越表面的感知能力，能感受到更深层次的事物。你内心敏感，有特殊的洞察力。失去的视觉让你的其他感官更加敏锐。"
+                },
+                "魔术师": {
+                    name: "塞尔维亚 (魔术师)",
+                    type: "求生者",
+                    description: "你像魔术师一样神秘且充满技巧，善于创造惊喜。你思维灵活，有创造力，能用独特方式解决问题。生活对你而言充满了可能性的幻象。"
+                },
+                "画家": {
+                    name: "埃德加·瓦尔德 (画家)",
+                    type: "求生者",
+                    description: "你像画家一样富有艺术气质和创造力。你感性细腻，有独特的视角，能看到世界的美丽与忧伤。你通过艺术表达内心深处的感受。"
+                },
+                
+                // 新增角色
+                "冒险家": {
+                    name: "克雷格 (冒险家)",
+                    type: "求生者",
+                    description: "你像冒险家一样充满探索精神和勇气。你享受挑战，不惧风险，总是寻找新的体验。你相信人生就是一场伟大的冒险。"
+                },
+                "占卜师": {
+                    name: "帕特里夏 (占卜师)",
+                    type: "求生者",
+                    description: "你像占卜师一样有着神秘的直觉和预感。你敏感而神秘，能够感知到常人无法察觉的信息。你相信命运的指引。"
+                },
+                "囚徒": {
+                    name: "雷明顿 (囚徒)",
+                    type: "求生者",
+                    description: "你像囚徒一样富有生存韧性和挣脱束缚的渴望。你经历过限制，因此特别珍视自由。你懂得在最严苛的环境中寻求生机。"
+                },
+                "舞女": {
+                    name: "瓦莱丽 (舞女)",
+                    type: "求生者",
+                    description: "你像舞女一样优雅灵动，富有表现力。你用艺术表达内心，在动荡中保持优雅。你的生活如同一场精心编排的舞蹈。"
+                },
+                "驯兽师": {
+                    name: "穆萨 (驯兽师)",
+                    type: "求生者",
+                    description: "你像驯兽师一样有着非凡的耐心和理解力。你能与最野性的灵魂沟通，在混乱中找到秩序。你相信每个生命都有其独特的语言。"
+                },
+                
+                // 添加监管者角色
+                "小丑": {
+                    name: "塞尔吉奥 (小丑)",
+                    type: "监管者",
+                    description: "你像小丑一样充满戏剧性和不可预测性。你享受制造混乱和惊喜，有时善良有时残忍。你的情绪多变，难以被他人真正理解。"
+                },
+                "红蝶": {
+                    name: "米歇拉 (红蝶)",
+                    type: "监管者",
+                    description: "你像红蝶一样优雅而致命。你表面温柔美丽，内心却有着不可低估的决心。你懂得如何用美丽的外表掩盖强大的力量。"
+                },
+                "杰克": {
+                    name: "杰克 (开膛手)",
+                    type: "监管者",
+                    description: "你像杰克一样精准而神秘。你行动缜密，有着非凡的观察力和执行力。你善于隐藏自己的真实意图，直到最后一刻。"
+                },
+                "鹿头": {
+                    name: "黑斯廷斯 (鹿头)",
+                    type: "监管者",
+                    description: "你像鹿头一样沉默而强大。你有着古老的智慧和难以动摇的意志。自然的力量在你体内流淌，使你与众不同。"
+                },
+                "黄衣之主": {
+                    name: "哈斯塔 (黄衣之主)",
+                    type: "监管者",
+                    description: "你像黄衣之主一样神秘而强大。你拥有常人无法理解的力量，对世界有着独特的视角。你的存在本身就是一个谜。"
+                },
+                
+                // 更多新角色...
+                "厨师": {
+                    name: "李泰永 (厨师)",
+                    type: "求生者",
+                    description: "你像厨师一样注重细节和准备。你有着丰富的生活智慧，能用有限的资源创造奇迹。你相信每个困难都有解决的配方。"
+                },
+                "调香师": {
+                    name: "薇拉·奈尔 (调香师)",
+                    type: "求生者",
+                    description: "你像调香师一样敏感而细腻。你能捕捉到细微的变化和情绪，创造出独特的体验。你的世界充满了别人无法感知的层次。"
+                },
+                "军官": {
+                    name: "玛莎 (军官)",
+                    type: "求生者",
+                    description: "你像军官一样有纪律性和领导力。你行事果断，重视秩序和规则。在混乱中，你能迅速组织起有效的行动。"
+                },
+                "破轮": {
+                    name: "波克 (破轮)",
+                    type: "监管者",
+                    description: "你像破轮一样具有破坏性和不可阻挡的力量。你目标明确，行动坚决。一旦决定，便会不惜一切代价达成。"
+                },
+                "摄影师": {
+                    name: "约瑟夫 (摄影师)",
+                    type: "监管者",
+                    description: "你像摄影师一样善于捕捉瞬间和细节。你有着敏锐的观察力，能看到常人忽略的细节。你喜欢记录和保存重要的时刻。"
+                },
+                "百变怪": {
+                    name: "德古拉 (百变怪)",
+                    type: "监管者",
+                    description: "你像百变怪一样适应性强，善于变化。你可以根据环境迅速调整自己的行为和策略。你的真实面目常常让人捉摸不透。"
+                },
+                "入殓师": {
+                    name: "艾米洛 (入殓师)",
+                    type: "求生者",
+                    description: "你像入殓师一样平静地面对生死。你有着超越常人的冷静和洞察力，能在最黑暗的时刻保持清醒。你尊重每一个灵魂的旅程。"
+                },
+                "残翼": {
+                    name: "托尼 (残翼)",
+                    type: "求生者",
+                    description: "你像残翼一样虽有伤痛但依然坚强。曾经的伤痛并没有摧毁你，反而让你更加珍视生命的每一刻。你在逆境中展现出非凡的韧性。"
+                },
+                "造梦师": {
+                    name: "梦见 (造梦师)",
+                    type: "求生者",
+                    description: "你像造梦师一样富有想象力和创造力。你能在现实的框架外思考，发现别人看不到的可能性。你的梦想是你最强大的武器。"
+                },
+                "疯眼": {
+                    name: "维奥莱塔 (疯眼)",
+                    type: "监管者",
+                    description: "你像疯眼一样洞察力惊人但难以被常人理解。你的视角独特，看事物的方式与众不同。你的思维方式既是你的武器也是你的负担。"
+                },
+                "博士": {
+                    name: "卡尔 (博士)",
+                    type: "监管者",
+                    description: "你像博士一样理性冷静，追求知识。你相信科学和逻辑，喜欢通过实验验证自己的假设。你的好奇心驱使你不断探索未知。"
+                },
+                "护士": {
+                    name: "艾丽 (护士)",
+                    type: "求生者",
+                    description: "你像护士一样富有同情心和耐心。你全心全意照顾他人，总是将别人的需要放在首位。你在危机中保持冷静，是团队的健康守护者。"
+                }
+            };
+            
+            let currentQuestion = 0;
+            let userScores = {};
+            
+            // 初始化角色分数
+            Object.keys(characters).forEach(character => {
+                userScores[character] = 0;
+            });
+            
+            // 显示问题
+            function showQuestion(questionIndex) {
+                if (questionIndex === 0) {
+                    nextBtn.textContent = '开始测试';
+                    prevBtn.style.display = 'none';
+                } else {
+                    nextBtn.textContent = questionIndex === questions.length ? '查看结果' : '下一题';
+                    prevBtn.style.display = 'block';
+                }
+                
+                if (questionIndex >= questions.length) {
+                    showResult();
+                    return;
+                }
+                
+                const questionData = questions[questionIndex];
+                questionContainer.innerHTML = `
+                    <div class="test-question">${questionIndex + 1}. ${questionData.question}</div>
+                    <div class="test-options">
+                        ${questionData.options.map((option, index) => `
+                            <div class="test-option" data-index="${index}">${option.text}</div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                // 添加选项点击事件
+                document.querySelectorAll('.test-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        document.querySelectorAll('.test-option').forEach(opt => {
+                            opt.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                            opt.style.borderColor = '#d3b990';
+                        });
+                        
+                        this.style.backgroundColor = 'rgba(211, 185, 144, 0.3)';
+                        this.style.borderColor = '#fff';
+                        
+                        const selectedIndex = parseInt(this.dataset.index);
+                        const scores = questionData.options[selectedIndex].scores;
+                        
+                        // 更新分数
+                        Object.keys(scores).forEach(character => {
+                            userScores[character] += scores[character];
+                        });
+                        
+                        // 自动进入下一题
+                        setTimeout(() => {
+                            nextQuestion();
+                        }, 500);
+                    });
+                });
+            }
+            
+            // 显示结果
+            function showResult() {
+                // 找出得分最高的角色
+                let maxScore = -Infinity;
+                let resultCharacter = "";
+                
+                Object.keys(userScores).forEach(character => {
+                    if (userScores[character] > maxScore) {
+                        maxScore = userScores[character];
+                        resultCharacter = character;
+                    }
+                });
+                
+                const character = characters[resultCharacter];
+                
+                // 设置角色类型样式
+                characterType.textContent = character.type;
+                characterType.className = "character-type " + (character.type === "监管者" ? "hunter" : "");
+                
+                resultName.textContent = character.name;
+                resultDescription.textContent = character.description;
+                
+                testContainer.style.display = 'none';
+                testResult.style.display = 'block';
+            }
+            
+            // 下一题
+            function nextQuestion() {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+            
+            // 上一题
+            function prevQuestion() {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+                
+                // 重置当前问题的分数
+                const questionData = questions[currentQuestion];
+                questionData.options.forEach(option => {
+                    Object.keys(option.scores).forEach(character => {
+                        userScores[character] -= option.scores[character];
+                    });
+                });
+            }
+            
+            // 重置测试
+            function resetTest() {
+                currentQuestion = 0;
+                Object.keys(userScores).forEach(character => {
+                    userScores[character] = 0;
+                });
+                testContainer.style.display = 'block';
+                testResult.style.display = 'none';
+                showQuestion(0);
+            }
+            
+            // 事件监听
+            testBtn.addEventListener('click', function() {
+                testModal.style.display = 'block';
+                resetTest();
+            });
+            
+            closeTest.addEventListener('click', function() {
+                testModal.style.display = 'none';
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestion === 0) {
+                    nextQuestion();
+                } else if (currentQuestion < questions.length) {
+                    const selectedOption = document.querySelector('.test-option[style*="background-color: rgba(211, 185, 144, 0.3)"]');
+                    if (selectedOption) {
+                        nextQuestion();
+                    } else {
+                        alert('请选择一个选项');
+                    }
+                } else {
+                    showResult();
+                }
+            });
+            
+            prevBtn.addEventListener('click', prevQuestion);
+            retakeBtn.addEventListener('click', resetTest);
+            
+            // 点击模态窗口外部关闭
+            window.addEventListener('click', function(event) {
+                if (event.target === testModal) {
+                    testModal.style.display = 'none';
+                }
+            });
+            
+            // 添加水波纹效果脚本
+            document.addEventListener('DOMContentLoaded', function() {
+                const btn = document.getElementById('personalityTestBtn');
+                
+                btn.addEventListener('click', function(e) {
+                    let x = e.clientX - e.target.getBoundingClientRect().left;
+                    let y = e.clientY - e.target.getBoundingClientRect().top;
+                    
+                    let ripple = document.createElement('span');
+                    ripple.className = 'ripple';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+            
+            // 初始显示
+            showQuestion(0);
+        });
+    </script>
 </body>
 </html> 
