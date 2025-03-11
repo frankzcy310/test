@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第五人格时钟壁纸</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .background-video, .background {
+            filter: brightness(1.4) contrast(1.1); /* 增加亮度40%并提高对比度 */
+        }
+        
+        /* 增加电影感暗角效果 */
+        .container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(
+                ellipse at center,
+                transparent 60%,
+                rgba(0, 0, 0, 0.5) 100%
+            );
+            z-index: 1;
+        }
+        
+        /* 增强电影色调 */
+        body {
+            --main-color: #d3b990; /* 调整为更温暖的金色调 */
+        }
+        
+        .time, .date, .quote {
+            color: var(--main-color);
+            text-shadow: 0 0 15px rgba(211, 185, 144, 0.4);
+        }
+        
+        /* 添加胶片颗粒效果 */
+        .film-grain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMiIvPjwvc3ZnPg==');
+            background-repeat: repeat;
+            mix-blend-mode: overlay;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        /* 添加电影字幕效果 */
+        .quote {
+            font-style: italic;
+            letter-spacing: 2px;
+            padding: 15px 25px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 3px;
+            margin-top: 40px;
+            border-left: 3px solid var(--main-color);
+            transform: perspective(500px) rotateX(5deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <video class="background-video" autoplay loop muted playsinline>
+            <source src="coa_background.mp4" type="video/mp4">
+            <!-- 备用静态背景，当视频无法播放时显示 -->
+            <div class="background"></div>
+        </video>
+        <!-- Bloom效果层会通过JavaScript动态添加到这里 -->
+        <div class="overlay"></div>
+        <!-- 红光和胶片颗粒效果将由JavaScript动态添加 -->
+        
+        <!-- 移除闪烁特效层 -->
+        <!-- <div class="flicker-effect"></div> -->
+        
+        <!-- 移除幽灵特效容器 -->
+        <!-- <div class="ghost-container" id="ghostContainer"></div> -->
+        
+        <!-- 保留点击特效容器 -->
+        <div class="click-effects-container" id="clickEffectsContainer"></div>
+        
+        <div class="clock-container">
+            <div class="clock-frame">
+                <div class="clock">
+                    <div class="time" id="time">00:00:00</div>
+                    <div class="date" id="date">0000年00月00日</div>
+                </div>
+            </div>
+            
+            <div class="particles-container" id="particles"></div>
+            
+            <div class="quote">逃出庄园的唯一希望，是找出隐藏的真相</div>
+        </div>
+    </div>
+
+    <div class="film-grain"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
